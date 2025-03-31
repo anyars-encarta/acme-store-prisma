@@ -1,0 +1,42 @@
+"use server";
+
+import { prisma } from "../prisma";
+
+interface IProduct {
+  name: string;
+  category: string;
+  price: number;
+  description: string;
+  images?: string[];
+}
+
+export const createProduct = async (input: IProduct) => {
+  try {
+    const { name, category, price, description, images } = input;
+
+    const newProduct = await prisma.product.create({
+      data: {
+        name,
+        category,
+        price,
+        description,
+        images: {
+          create: images?.map((url) => ({ url })),
+        },
+      },
+    });
+
+    return newProduct;
+  } catch (e) {
+    console.error("Error creating new product", e);
+    throw new Error("Error creating new product");
+  }
+};
+
+export const getSingleProduct = async (id: string) => {};
+
+export const getAllProducts = async () => {};
+
+export const updateProduct = async (id: string) => {};
+
+export const deleteProduct = async (id: string) => {};

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { createProduct } from "@/lib/actions/product";
 
 export const revalidate = 1;
 
@@ -37,9 +38,16 @@ export default function AddProduct({
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("electronics");
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log({ name, category, images, description, price });
+
+    try {
+      await createProduct({ name, category, description, price, images })
+    } catch (e) {
+      console.error("Error creating product", e);
+      throw new Error("Error creating product");
+    }
+    // console.log({ name, category, images, description, price });
   };
 
   return (
