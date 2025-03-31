@@ -42,6 +42,14 @@ export default function AddProduct({
     e.preventDefault();
 
     try {
+      if(!name || !category || !description || !price) {
+        throw new Error("Please fill all the fields");
+      };
+
+      if(price <= 0) {
+        throw new Error("Please enter a valid price");
+      }
+      
       await createProduct({ name, category, description, price, images })
     } catch (e) {
       console.error("Error creating product", e);
