@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "@/lib/actions/product";
+import { toast } from "@/hooks/use-toast";
 
 export const revalidate = 1;
 
@@ -43,14 +44,32 @@ export default function AddProduct({
 
     try {
       if(!name || !category || !description || !price) {
-        throw new Error("Please fill all the fields");
+        toast({
+          title: "Error",
+          description: "Please fii in the required fields",
+          variant: "destructive",
+        });
+
+        return;
       };
 
       if(price <= 0) {
-        throw new Error("Please enter a valid price");
+        toast({
+          title: "Error",
+          description: "Please enter a valid price.",
+          variant: "destructive",
+        });
+
+        return;
       }
-      
+
       await createProduct({ name, category, description, price, images })
+
+      toast({
+        title: "Product added",
+        description: `${name} added successfuly`,
+      });
+
     } catch (e) {
       console.error("Error creating product", e);
       throw new Error("Error creating product");
