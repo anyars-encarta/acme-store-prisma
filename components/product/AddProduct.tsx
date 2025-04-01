@@ -43,7 +43,7 @@ export default function AddProduct({
     e.preventDefault();
 
     try {
-      if(!name || !category || !description || !price) {
+      if (!name || !category || !description || !price) {
         toast({
           title: "Error",
           description: "Please fii in the required fields",
@@ -51,9 +51,9 @@ export default function AddProduct({
         });
 
         return;
-      };
+      }
 
-      if(price <= 0) {
+      if (price <= 0) {
         toast({
           title: "Error",
           description: "Please enter a valid price.",
@@ -62,14 +62,12 @@ export default function AddProduct({
 
         return;
       }
-
-      await createProduct({ name, category, description, price, images })
+      await createProduct({ name, category, description, price, images });
 
       toast({
         title: "Product added",
         description: `${name} added successfuly`,
       });
-
     } catch (e) {
       console.error("Error creating product", e);
       throw new Error("Error creating product");
