@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "@/lib/actions/product";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export const revalidate = 1;
 
@@ -38,6 +39,7 @@ export default function AddProduct({
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("electronics");
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -62,7 +64,9 @@ export default function AddProduct({
 
         return;
       }
-      await createProduct({ name, category, description, price, images });
+      const createdProduct = await createProduct({ name, category, description, price, images });
+
+      router.push(`/product/view/${createdProduct.id}`);
 
       toast({
         title: "Product added",

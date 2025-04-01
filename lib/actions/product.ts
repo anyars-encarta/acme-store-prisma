@@ -33,7 +33,22 @@ export const createProduct = async (input: IProduct) => {
   }
 };
 
-export const getSingleProduct = async (id: string) => {};
+export const getProductById = async (id: number) => {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        images: true,
+        reviews: true,
+      },
+    });
+
+    return product;
+  } catch (e) {
+    console.error("Error fetching product", e);
+    throw new Error("Error fetching product");
+  }
+};
 
 export const getAllProducts = async () => {};
 
