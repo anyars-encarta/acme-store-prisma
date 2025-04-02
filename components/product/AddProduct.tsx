@@ -1,9 +1,11 @@
 "use client";
 
 import ImageSelect from "./ImageSelect";
+import { IProduct } from "./Product";
 
 import { useState } from "react";
 import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -16,30 +18,94 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { createProduct, updateProduct } from "@/lib/actions/product";
+import { toast } from "@/hooks/use-toast";
 
 export const revalidate = 1;
 
 export default function AddProduct({
   edit,
   id,
+  product,
 }: {
   edit?: boolean;
   id?: string;
+  product?: IProduct;
 }) {
   const title = edit ? "Edit Product " + id : "Add Product";
   const subText = edit
     ? "Update the details of your product here."
     : "Add a new product to your store.";
 
-  const [images, setImages] = useState<string[]>([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("electronics");
+  const [images, setImages] = useState<string[]>(
+    product?.images.map((i) => i.url) || []
+  );
+  const [name, setName] = useState(product?.name || "");
+  const [price, setPrice] = useState(product?.price || 0);
+  const [description, setDescription] = useState(product?.description || "");
+  const [category, setCategory] = useState(product?.category || "electronics");
+  const router = useRouter();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log({ name, category, images, description, price });
+
+    try {
+      if (!name || !category || !description || !price) {
+        toast({
+          title: "Error",
+          description: "Please fii in the required fields",
+          variant: "destructive",
+        });
+
+        return;
+      }
+
+      if (price <= 0) {
+        toast({
+          title: "Error",
+          description: "Please enter a valid price.",
+          variant: "destructive",
+        });
+
+        return;
+      }
+
+      if (edit && product) {
+        const updatedProduct = await updateProduct(product.id, {
+          name,
+          category,
+          description,
+          price,
+          images,
+        });
+
+        router.push(`/product/view/${updatedProduct.id}`);
+
+        toast({
+          title: "Product updated",
+          description: `${name} updated successfuly`,
+        });
+      } else {
+        const createdProduct = await createProduct({
+          name,
+          category,
+          description,
+          price,
+          images,
+        });
+
+        router.push(`/product/view/${createdProduct.id}`);
+
+        toast({
+          title: "Product added",
+          description: `${name} added successfuly`,
+        });
+      }
+    } catch (e) {
+      console.error("Error creating product", e);
+      throw new Error("Error creating product");
+    }
+    // console.log({ name, category, images, description, price });
   };
 
   return (
