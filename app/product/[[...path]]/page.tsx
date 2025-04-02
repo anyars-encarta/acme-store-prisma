@@ -11,7 +11,6 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   const method = params.path[0];
   const id = params.path[1];
 
-  
   if (method === "new") {
     return <AddProduct />;
   }
@@ -22,8 +21,8 @@ export default async function Page({ params }: { params: { path: string[] } }) {
 
   if (!product) {
     return <div>Product not found!</div>;
-  };
-  
+  }
+
   if (method === "edit") {
     return <AddProduct edit id={id} product={product} />;
   }
@@ -31,18 +30,20 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     return <DeleteProduct id={id} />;
   }
 
-
   return (
     <div className="pt-20 grid md:grid-cols-2 gap-8 max-w-6xl mx-auto py-12 px-4">
       <ProductView product={product} />
       <div className="flex flex-col gap-y-5">
         <span className="text-2xl font-bold h-fit">Customer Reviews</span>
         <div className="grid gap-5">
-          {reviews && reviews.map((review) => <ReviewView key={review.id} review={review} />)}
+          {reviews &&
+            reviews.map((review) => (
+              <ReviewView key={review.id} review={review} />
+            ))}
         </div>
       </div>
       <div className="md:col-span-2">
-        <AddReview />
+        <AddReview productId={parseInt(id)} />
       </div>
     </div>
   );

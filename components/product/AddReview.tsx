@@ -4,15 +4,44 @@ import RatingSelect from "./Review/RatingSelect";
 
 import { useState } from "react";
 
-export default function Component() {
+import { createReview } from "@/lib/actions/review";
+import { toast } from "@/hooks/use-toast";
+import { revalidateTag } from "next/cache";
+
+export default function Component({ productId }: { productId: number }) {
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
-  const [review, setReview] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    console.log({ name, rating, review });
+    try {
+      const createdReview = await createReview({
+        productId,
+        name,
+        rating,
+        content,
+      });
+
+      toast({
+        title: "Review created",
+        description: `Review has been created successfuly`,
+      });
+
+      revalidateTag("Product");
+
+      return createdReview;
+    } catch (e) {
+      console.error("Error creating a review", e);
+      
+      toast({
+        title: "Error",
+        description: `There was an error creating review.`,
+        variant: "destructive",
+      });
+    }
+    // console.log({ name, rating, review });
   };
   return (
     <section className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md">
@@ -54,8 +83,8 @@ export default function Component() {
               Review
             </label>
             <textarea
-              value={review}
-              onChange={(event) => setReview(event.target.value)}
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-950 dark:border-gray-700 dark:text-gray-300"
               id="review"
               placeholder="Write your review"
