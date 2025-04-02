@@ -4,6 +4,7 @@ import ImageSelect from "./ImageSelect";
 
 import { useState } from "react";
 import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "@/lib/actions/product";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 export const revalidate = 1;
 
@@ -64,7 +64,13 @@ export default function AddProduct({
 
         return;
       }
-      const createdProduct = await createProduct({ name, category, description, price, images });
+      const createdProduct = await createProduct({
+        name,
+        category,
+        description,
+        price,
+        images,
+      });
 
       router.push(`/product/view/${createdProduct.id}`);
 
