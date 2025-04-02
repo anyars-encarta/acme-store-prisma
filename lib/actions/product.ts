@@ -50,7 +50,21 @@ export const getProductById = async (id: number) => {
   }
 };
 
-export const getAllProducts = async () => {};
+export const getAllProducts = async () => {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        images: true,
+        reviews: true,
+      }
+    });
+  
+    return products;
+  } catch (e) {
+    console.error("Error fetching products", e);
+    throw new Error("Error fetching products");
+  }
+};
 
 export const updateProduct = async (id: string) => {};
 
