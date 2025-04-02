@@ -14,7 +14,6 @@ export default function ReviewView({ review }: { review: Review }) {
     .join("")
     .toUpperCase();
 
-  console.log(review);
   return (
     <Card>
       <CardContent className="grid gap-4 p-4">
