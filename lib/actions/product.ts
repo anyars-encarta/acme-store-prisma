@@ -58,7 +58,7 @@ export const getAllProducts = async () => {
         reviews: true,
       },
     });
-  
+
     return products;
   } catch (e) {
     console.error("Error fetching products", e);
@@ -66,6 +66,29 @@ export const getAllProducts = async () => {
   }
 };
 
-export const updateProduct = async (id: string) => {};
+export const updateProduct = async (id: number, input: IProduct) => {
+  try {
+    const { name, category, price, description, images } = input;
+
+    const updatedProduct = await prisma.product.update({
+      where: { id },
+      data: {
+        name,
+        category,
+        price,
+        description,
+        images: {
+          deleteMany: {},
+          create: images?.map((url) => ({ url })),
+        },
+      },
+    });
+
+    return updatedProduct;
+  } catch (e) {
+    console.error("Error updating product", e);
+    throw new Error("Error updating product");
+  }
+};
 
 export const deleteProduct = async (id: string) => {};
