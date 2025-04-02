@@ -3,10 +3,10 @@
 import RatingSelect from "./Review/RatingSelect";
 
 import { useState } from "react";
+import { revalidateTag } from "next/cache";
 
 import { createReview } from "@/lib/actions/review";
 import { toast } from "@/hooks/use-toast";
-import { revalidateTag } from "next/cache";
 
 export default function Component({ productId }: { productId: number }) {
   const [rating, setRating] = useState(0);
@@ -34,7 +34,7 @@ export default function Component({ productId }: { productId: number }) {
       return createdReview;
     } catch (e) {
       console.error("Error creating a review", e);
-      
+
       toast({
         title: "Error",
         description: `There was an error creating review.`,
