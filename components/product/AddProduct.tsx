@@ -37,13 +37,14 @@ export default function AddProduct({
     ? "Update the details of your product here."
     : "Add a new product to your store.";
 
-  const [images, setImages] = useState<string[]>(product?.images.map((i) => i.url ) || []);
+  const [images, setImages] = useState<string[]>(
+    product?.images.map((i) => i.url) || []
+  );
   const [name, setName] = useState(product?.name || "");
   const [price, setPrice] = useState(product?.price || 0);
   const [description, setDescription] = useState(product?.description || "");
   const [category, setCategory] = useState(product?.category || "electronics");
   const router = useRouter();
-
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -69,7 +70,7 @@ export default function AddProduct({
         return;
       }
 
-      if(edit && product) {
+      if (edit && product) {
         const updatedProduct = await updateProduct(product.id, {
           name,
           category,
@@ -79,7 +80,7 @@ export default function AddProduct({
         });
 
         router.push(`/product/view/${updatedProduct.id}`);
-  
+
         toast({
           title: "Product updated",
           description: `${name} updated successfuly`,
@@ -92,9 +93,9 @@ export default function AddProduct({
           price,
           images,
         });
-  
+
         router.push(`/product/view/${createdProduct.id}`);
-  
+
         toast({
           title: "Product added",
           description: `${name} added successfuly`,
