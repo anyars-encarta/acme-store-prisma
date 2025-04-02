@@ -56,7 +56,7 @@ export const getAllProducts = async () => {
       include: {
         images: true,
         reviews: true,
-      }
+      },
     });
   
     return products;
