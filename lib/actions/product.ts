@@ -91,4 +91,15 @@ export const updateProduct = async (id: number, input: IProduct) => {
   }
 };
 
-export const deleteProduct = async (id: string) => {};
+export const deleteProduct = async (id: number) => {
+  try {
+    await prisma.product.delete({
+      where: { id },
+    });
+
+    return true;
+  } catch (e) {
+    console.error("Error deleting product", e);
+    throw new Error("Error deleting product");
+  }
+};
