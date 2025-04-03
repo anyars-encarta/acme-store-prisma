@@ -36,7 +36,7 @@ export default async function Component() {
   //   },
   // ];
   const products = await getAllProducts();
-
+  
   return (
     <div className="grid md:grid-cols-[300px_1fr] gap-8 px-4 md:px-8 py-20">
       <div className="bg-white rounded-lg shadow-sm dark:bg-gray-950 p-6 space-y-6">

@@ -35,6 +35,22 @@ export const createProduct = async (input: IProduct) => {
   }
 };
 
+export const getAllProducts = async () => {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        images: true,
+        reviews: true,
+      },
+    });
+
+    return products;
+  } catch (e) {
+    console.error("Error fetching products", e);
+    throw new Error("Error fetching products");
+  }
+};
+
 const _getProductById = async (id: number) => {
   try {
     const product = await prisma.product.findUnique({
@@ -57,21 +73,7 @@ export const getProductById = cache(_getProductById, ["getProductById"], {
   revalidate: 60,
 });
 
-export const getAllProducts = async () => {
-  try {
-    const products = await prisma.product.findMany({
-      include: {
-        images: true,
-        reviews: true,
-      },
-    });
 
-    return products;
-  } catch (e) {
-    console.error("Error fetching products", e);
-    throw new Error("Error fetching products");
-  }
-};
 
 export const updateProduct = async (id: number, input: IProduct) => {
   try {
