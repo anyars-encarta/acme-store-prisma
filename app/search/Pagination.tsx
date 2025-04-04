@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { modifySearchParams } from "@/lib/utils";
 
-const Pagination = ({lastPageReached}: {lastPageReached: number}) => {
+const Pagination = ({ lastPageReached }: { lastPageReached: number }) => {
   const searchParams = Object.fromEntries(useSearchParams()) as any;
   const page = parseInt(searchParams.page) || 1;
 
@@ -29,7 +29,11 @@ const Pagination = ({lastPageReached}: {lastPageReached: number}) => {
         Previous
       </button>
       {page}
-      <button className="text-black disabled:text-gray-400" onClick={() => handlePageChange(page + 1)} disabled={lastPageReached === 0}>
+      <button
+        className="text-black disabled:text-gray-400"
+        onClick={() => handlePageChange(page + 1)}
+        disabled={lastPageReached === 0}
+      >
         Next
       </button>
     </div>
