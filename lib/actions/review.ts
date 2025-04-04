@@ -32,3 +32,18 @@ export const createReview = async (reviewInput: IReview) => {
         throw new Error("Error creating a review");
     }
 };
+
+export const reviewCount = (id: string) => {
+    try {
+        const counted = prisma.review.count ({
+            where: {
+                productId: parseInt(id),
+            }
+        })
+    
+        return counted;
+    } catch (e) {
+        console.error("Error counting reviews", e);
+        throw new Error("Error counting reviews");
+    }
+}

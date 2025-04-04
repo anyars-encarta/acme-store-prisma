@@ -51,7 +51,7 @@ export default async function Component({
   const page = parseInt(searchParams.page) || 1;
   const { name, category, minRating } = searchParams;
   const products = await getAllProducts({ ...searchParams, page });
-
+  
   let lastPageReached = products.length;
 
   return (

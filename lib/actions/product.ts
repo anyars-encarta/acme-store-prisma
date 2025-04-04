@@ -55,6 +55,9 @@ export const getAllProducts = async ({
       include: {
         images: true,
         reviews: true,
+        _count: {
+          select: { reviews: true },
+        }
       },
       where: {
         name: {
