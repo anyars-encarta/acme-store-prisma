@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import Stars from "@/components/product/Stars";
 
-export default function ProductResult({ product }: { product: any }) {
+export default async function ProductResult({ product }: { product: any }) {
   const { id, name, rating, image } = product;
 
   return (
@@ -19,6 +19,10 @@ export default function ProductResult({ product }: { product: any }) {
             <Stars rating={rating} />
             <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
               {rating}
+            </span>
+
+            <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+              Reviews: {product._count.reviews}
             </span>
           </div>
         </div>

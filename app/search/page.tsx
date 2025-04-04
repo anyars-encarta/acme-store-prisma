@@ -49,14 +49,15 @@ export default async function Component({
   //   },
   // ];
   const page = parseInt(searchParams.page) || 1;
-  const products = await getAllProducts({ page });
-
+  const { name, category, minRating } = searchParams;
+  const products = await getAllProducts({ ...searchParams, page });
+  
   let lastPageReached = products.length;
 
   return (
     <div className="grid md:grid-cols-[300px_1fr] gap-8 px-4 md:px-8 py-20">
       <div className="bg-white rounded-lg shadow-sm dark:bg-gray-950 p-6 space-y-6">
-        <SearchFilters />
+        <SearchFilters name={name} category={category} minRating={parseInt(minRating)} />
         <Pagination lastPageReached={lastPageReached} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -35,15 +35,41 @@ export const createProduct = async (input: IProduct) => {
   }
 };
 
-export const getAllProducts = async ({ page = 1 }) => {
+export const getAllProducts = async ({
+  page = 1,
+  name,
+  minPrice,
+  category,
+}: {
+  page?: number;
+  name?: string;
+  minPrice?: string;
+  category?: string;
+}) => {
   const resultsPerPage = 5;
   const skip = (page - 1) * resultsPerPage;
+  const filterCategory = category !== "all";
 
   try {
     const allProducts = await prisma.product.findMany({
       include: {
         images: true,
         reviews: true,
+        _count: {
+          select: { reviews: true },
+        }
+      },
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+        ...(filterCategory && { category }),
+        ...(minPrice && {
+          price: {
+            gte: parseInt(minPrice)
+          }
+        })
       },
       skip,
       take: resultsPerPage,

@@ -1,6 +1,14 @@
 import { Category, Name, Price } from "@/components/search/filterComponents";
 
-export default function SearchFilters() {
+export default function SearchFilters({
+  name,
+  category,
+  minRating,
+}: {
+  name: string;
+  category: string;
+  minRating: number;
+}) {
   return (
     <div>
       <h3 className="text-lg font-semibold">Filters</h3>
